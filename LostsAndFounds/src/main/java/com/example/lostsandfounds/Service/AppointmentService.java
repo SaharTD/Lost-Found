@@ -69,7 +69,6 @@ public class AppointmentService {
 
         if(oldAppointment!=null){
             oldAppointment.setTheDate(appointment.getTheDate());
-
             oldAppointment.setTheTime(appointment.getTheTime());
             oldAppointment.setLocation(appointment.getLocation());
 

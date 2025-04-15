@@ -1,13 +1,11 @@
 package com.example.lostsandfounds.Service;
 
 
+import com.example.lostsandfounds.Model.FoundItem;
 import com.example.lostsandfounds.Model.Item;
 import com.example.lostsandfounds.Model.Request;
 import com.example.lostsandfounds.Model.User;
-import com.example.lostsandfounds.Repository.AdminRepository;
-import com.example.lostsandfounds.Repository.ItemRepository;
-import com.example.lostsandfounds.Repository.RequestRepository;
-import com.example.lostsandfounds.Repository.UserRepository;
+import com.example.lostsandfounds.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +22,7 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
+    private final FountItemRepository fountItemRepository;
 
 
 
@@ -94,17 +93,52 @@ public class RequestService {
     ///  requestADonation >> user can request a donation only once
     /// based on the category and item name
 
-    public Boolean requestADonation(Request donationRequest) {
+    public String requestADonation(Request donationRequest) {
 
         User user = userRepository.findUserById(donationRequest.getUserId());
 
         if (user == null) {
-            return false;
+            return "userNF";
         }
 
-        donationRequest.setIsApproved(false);
-       requestRepository.save(donationRequest);
-       return true;
+        if (user.getDonationRequests() > 1) {
+            return "Not eligible";
+        }
+
+
+
+        if (!donationRequest.getRequestType().equalsIgnoreCase("Donation")) {
+            return "wrong type";
+
+        }
+
+
+
+        FoundItem matchedItem = fountItemRepository.findFoundItemByCategoryAndItemNameAndIsReadyForDonation(donationRequest.getItemCategory(), donationRequest.getItemName(), true);
+
+        donationRequest.setIsApproved(true);
+
+
+        /// uncreased donation requests
+        user.setDonationRequests(user.getDonationRequests() + 1);
+        ///set appointment true
+        user.setAppointment(true);
+
+
+        matchedItem.setDonated(true);
+        matchedItem.setItemStatus("Donated");
+        matchedItem.setDonatedTo(user.getId());
+        matchedItem.setIsReadyForDonation(false);
+
+
+        userRepository.save(user);
+        fountItemRepository.save(matchedItem);
+        requestRepository.save(donationRequest);
+        return "successfully";
+
+
+
+
         }
 
 

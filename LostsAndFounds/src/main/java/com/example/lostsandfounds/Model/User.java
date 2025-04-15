@@ -25,7 +25,8 @@ public class User {
     private String username ;
 
     @NotEmpty(message = "the password should not be empty")
-    @Column(columnDefinition = "varchar(10) not null")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
+    @Column(columnDefinition = "varchar(12) not null")
     private String password;
 
 
@@ -38,7 +39,7 @@ public class User {
     @NotEmpty(message = "the phone number should not be empty")
     @Size(max = 15,message = "the phone number size must be 10 numbers")
     @Pattern(regexp = "^[0-9]+$",message = "the phone number should be in the right format  ")
-    @Column(columnDefinition = "varchar(15) not null unique")
+    @Column(columnDefinition = "varchar(10) not null unique")
     private String phone_number;
 
 
@@ -57,14 +58,12 @@ public class User {
 
 
 
-    @Positive
     @Column(columnDefinition = "int")
-    private Integer donationRequests;
+    private Integer donationRequests=0;
 
 
-    @Positive
     @Column(columnDefinition = "int")
-    private Integer falseClaims;
+    private Integer falseClaims=0;
 
 
     @Column(columnDefinition = "boolean ")
@@ -74,9 +73,9 @@ public class User {
     private Boolean appointment;
 
 
-    @Positive
+
     @Column(columnDefinition = "int")
-    private Integer points;
+    private Integer points=0;
 
 
 

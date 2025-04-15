@@ -2,6 +2,8 @@ package com.example.lostsandfounds.Controller;
 
 import com.example.lostsandfounds.Api.ApiResponse;
 import com.example.lostsandfounds.Model.User;
+import com.example.lostsandfounds.Service.AdminService;
+import com.example.lostsandfounds.Service.FoundItemService;
 import com.example.lostsandfounds.Service.ItemService;
 import com.example.lostsandfounds.Service.UserService;
 import jakarta.validation.Valid;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
 
-    /// 2 end points ( check Status ,display Donations )
 
 
 
@@ -25,7 +26,7 @@ public class UserController {
 
 
     private final UserService userService;
-    private final ItemService itemService;
+    private final FoundItemService founditemService;
 
 
     @GetMapping("get")
@@ -79,7 +80,7 @@ public class UserController {
 
 
 
-    /// 4 checkRequestStatus >>this method will allow user to check
+    /// 1 checkRequestStatus >>this method will allow user to check
     ///   if their requests has been approved or not
     @GetMapping("check-request-status/{userId}")
     public ResponseEntity checkRequestStatus (@PathVariable Integer userId){
@@ -91,17 +92,40 @@ public class UserController {
 
 
 
-    /// 5
+//2
     /// displayDonation> this method make donation available for user view
     ///   if the item is unclaimed and been lost for 20 days
     @GetMapping("display-donations")
     public ResponseEntity displayDonations (){
-        return ResponseEntity.status(200).body(new ApiResponse("The item that are available for donation:"+itemService.displayDonations()));
+        return ResponseEntity.status(200).body(new ApiResponse("The item that are available for donation:"+founditemService.displayForDonation()));
 
     }
 
 
+/// 3
+    @GetMapping("find-by-status/{status}")
+    public ResponseEntity getLostItemByAddress(@PathVariable String status) {
+        return ResponseEntity.status(200).body((status));
+    }
 
+/// 4
+    @GetMapping("get-matched-item/{userId}")
+    public ResponseEntity checkMatchedItems( @PathVariable Integer userId) {
+
+        String result = founditemService.checkMatchedItems(userId);
+
+        if (result.equalsIgnoreCase("userNF")) {
+            return ResponseEntity.status(400).body(new ApiResponse("The user is not found"));
+
+        } else if (result.equalsIgnoreCase("not match")) {
+            return ResponseEntity.status(400).body(new ApiResponse("The item information does not match"));
+
+        } else if (result.equalsIgnoreCase("item not found")) {
+            return ResponseEntity.status(400).body(new ApiResponse("Sorry no matching item has been found "));
+
+        } else
+            return ResponseEntity.status(200).body("We might have a similar item to your . please submit a claim request to further review ");
+    }
 
 
 

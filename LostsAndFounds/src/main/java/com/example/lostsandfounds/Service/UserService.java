@@ -1,9 +1,9 @@
 package com.example.lostsandfounds.Service;
 
 
-import com.example.lostsandfounds.Model.Appointment;
-import com.example.lostsandfounds.Model.Request;
-import com.example.lostsandfounds.Model.User;
+import com.example.lostsandfounds.Model.*;
+import com.example.lostsandfounds.Repository.AdminRepository;
+import com.example.lostsandfounds.Repository.FountItemRepository;
 import com.example.lostsandfounds.Repository.RequestRepository;
 import com.example.lostsandfounds.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final FountItemRepository fountItemRepository;
 
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
@@ -63,6 +64,10 @@ public class UserService {
     }
 
 
+
+
+
+
     /// checkRequestStatus>> this method will allow user to check
     /// if their requests has been approved or not
     public List<Request> checkRequestStatus(Integer userId) {
@@ -70,6 +75,7 @@ public class UserService {
         List<Request> userRequest = requestRepository.findRequestByUserId(userId);
         return userRequest;
     }
+
 
 
 

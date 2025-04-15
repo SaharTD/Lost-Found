@@ -1,6 +1,7 @@
 package com.example.lostsandfounds.Service;
 
 
+import com.example.lostsandfounds.Model.FoundItem;
 import com.example.lostsandfounds.Model.Reviews;
 import com.example.lostsandfounds.Model.Reward;
 import com.example.lostsandfounds.Model.User;
@@ -67,6 +68,10 @@ public class ReviewsService {
     }
 
 
+
+    public List<Reviews> findReviewWithSpecifWord(String keyWord) {
+        return reviewsRepository.findReviewWithSpecifWord(keyWord);
+    }
 
 
 

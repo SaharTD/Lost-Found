@@ -72,8 +72,7 @@ public class RewardController {
 
 
 
-
-/// 16
+/// 5
     @PutMapping("request-reward/{userId}")
     public ResponseEntity requestReward( @PathVariable Integer userId){
 

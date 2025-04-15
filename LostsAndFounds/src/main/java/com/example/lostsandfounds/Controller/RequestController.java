@@ -60,7 +60,7 @@ public class RequestController {
     }
 
 
-    /// 1
+
     /// requestToClaim >> the user will ClaimRequest to claim an item adding all the item information
     @PostMapping("request-to-claim")
     public ResponseEntity requestToClaim(@Valid @RequestBody Request claimRequest, Errors e) {
@@ -76,10 +76,13 @@ public class RequestController {
 
     }
 
-    /// 2  requestADonation >> user can request a donation only once
+   ///  requestADonation >> user can request a donation only once
     /// based on the category and item name
 
 
+
+
+   /// 8
     @PostMapping("request-donation")
     public ResponseEntity requestADonation(@Valid @RequestBody Request donationRequest, Errors e) {
         User user = userRepository.findUserById(donationRequest.getUserId());
@@ -87,10 +90,32 @@ public class RequestController {
         if (e.hasErrors()) {
             return ResponseEntity.status(400).body(e.getFieldError().getDefaultMessage());
         }
+        String result = requestService.requestADonation(donationRequest);
 
-        if (requestService.requestADonation(donationRequest)) {
-            return ResponseEntity.status(200).body(new ApiResponse("The request is done successfully , please wait for the admin approval !"));
-        } else return ResponseEntity.status(400).body(new ApiResponse("The user id  is not found"));
+
+        if (result.equalsIgnoreCase("adminNF")) {
+            return ResponseEntity.status(400).body(new ApiResponse("The admin is not found"));
+
+        } else if (result.equalsIgnoreCase("requestNF")) {
+
+            return ResponseEntity.status(400).body(new ApiResponse("The request is not found"));
+
+        }else if (result.equalsIgnoreCase("userNF")) {
+
+            return ResponseEntity.status(400).body(new ApiResponse("The user is not found"));
+
+        } else if (result.equalsIgnoreCase("Not eligible")) {
+
+            return ResponseEntity.status(400).body(new ApiResponse("The user is not eligible fot donation "));
+
+        } else if (result.equalsIgnoreCase("wrong type")) {
+
+            return ResponseEntity.status(400).body(new ApiResponse("you are requesting the wrong type"));
+
+
+        } else return ResponseEntity.status(200).body(new ApiResponse("The request is approved successfully !. you can book an appointment now "));
+
+
 
 
     }

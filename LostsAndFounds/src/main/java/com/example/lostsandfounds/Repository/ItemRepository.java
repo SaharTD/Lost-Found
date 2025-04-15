@@ -15,15 +15,10 @@ public interface ItemRepository extends JpaRepository<Item,Integer> {
     Item findItemById(Integer id);
 
 
-    @Query("select i from Item i where i.itemType=?1")
-    Item findLostItemByUserId(String type, Integer userId);
 
     Item findItemByUserId(Integer userId);
 
-    List<Item> findItemByItemNameAndCategoryAndTheDateAndLocation(String itemName, String category, LocalDate theDate, String location);
 
-    Item findItemByCategoryAndItemNameAndIsReadyForDonation(String category, String itemName, Boolean isReadyForDonation);
-
-    @Query("select i from Item i where  i.location=?1 and i.itemType='Lost'")
+    @Query("select i from Item i where  i.location=?1 and i.itemStatus='Lost'")
     List <Item> findLostItemBasedOnTheLocation(String Location);
 }

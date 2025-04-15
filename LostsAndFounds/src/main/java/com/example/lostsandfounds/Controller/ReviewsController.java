@@ -1,6 +1,7 @@
 package com.example.lostsandfounds.Controller;
 
 import com.example.lostsandfounds.Api.ApiResponse;
+import com.example.lostsandfounds.Model.FoundItem;
 import com.example.lostsandfounds.Model.Reviews;
 import com.example.lostsandfounds.Model.Reward;
 import com.example.lostsandfounds.Service.ReviewsService;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/review")
@@ -26,7 +29,7 @@ public class ReviewsController {
     }
 
 
-    /// 15
+    /// 6
     @PostMapping("add")
     public ResponseEntity addReviews(@Valid @RequestBody Reviews review, Errors e ){
 
@@ -74,6 +77,11 @@ public class ReviewsController {
 
 
 
+//7
+    @GetMapping("find-by-key-word/{keyWord}")
+    public ResponseEntity findReviewWithSpecifWord(@PathVariable String keyWord) {
+        return ResponseEntity.status(200).body(reviewsService.findReviewWithSpecifWord(keyWord));
+    }
 
 
 

@@ -34,13 +34,10 @@ public class Request {
     private Boolean isApproved ;
 
 
-
-
     @NotEmpty(message = "the item name should not be empty")
     @Size(max = 10, message = "the item name should be 10 letters only")
     @Column(columnDefinition = "varchar(10) not null ")
     private String itemName ;
-
 
 
     @NotEmpty(message = "the category should not be empty")

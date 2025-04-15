@@ -25,6 +25,7 @@ public class Admin {
     private String username ;
 
     @NotEmpty(message = "the password should not be empty")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
     @Column(columnDefinition = "varchar(10) not null")
     private String password;
 

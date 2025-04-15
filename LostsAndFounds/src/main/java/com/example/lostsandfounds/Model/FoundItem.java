@@ -3,7 +3,10 @@ package com.example.lostsandfounds.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +17,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Item {
+public class FoundItem {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-
-
 
 
     @NotEmpty(message = "the category should not be empty")
@@ -35,8 +36,8 @@ public class Item {
 
 
 
-    @NotEmpty(message = "the item status should not be empty")
-    @Pattern(regexp = "^(?i)(Lost|Found)$",message = "(Lost,Found)")
+    @NotEmpty(message = "the item type should not be empty")
+    @Pattern(regexp = "^(?i)(Found|Returned|Donated)$",message = "Type of item (Lost,Found)")
     @Column(columnDefinition = "varchar(15) not null ")
     private String itemStatus ;
 
@@ -60,6 +61,26 @@ public class Item {
     @Column(columnDefinition = "varchar(60) not null")
     private String description ;
 
+
+
+    @Column(columnDefinition = "boolean ")
+    private Boolean isClaimed ;
+
+
+    @Column(columnDefinition = "int ")
+    private Integer ReturnedTo=0;
+
+
+    @Column(columnDefinition = "int ")
+    private Integer DonatedTo=0;
+
+
+    @Column(columnDefinition = "boolean ")
+    private Boolean isReadyForDonation ;
+
+
+    @Column(columnDefinition = "boolean ")
+    private Boolean Donated ;
 
 
     @NotNull(message = "the user id should not be empty")

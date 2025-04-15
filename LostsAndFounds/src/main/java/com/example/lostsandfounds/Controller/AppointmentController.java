@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
 
 
-    ///  3 endpoints (add appointment , reschedule Appointment, get appointment by user)
     private final AppointmentService appointmentService;
     private final UserRepository userRepository;
 
@@ -28,18 +27,19 @@ public class AppointmentController {
     }
 
 
-/// 11
+///17
     @GetMapping("getById/{userId}")
     public ResponseEntity getAllAppointments(@PathVariable Integer userId) {
         return ResponseEntity.status(200).body(appointmentService.getAppointmentByUserId(userId));
     }
 
 
-    /// 6
+    ///
     ///  addAppointment >> user can add a an appointment to pick up their approved claimed item
     /// based on the approval the appointment status will be true if the appointment status is true then user is allowed to
     /// request an appointment
 
+    /// 11
     @PostMapping("add")
     public ResponseEntity addAppointment(@Valid @RequestBody Appointment appointment, Errors e) {
 
@@ -66,7 +66,7 @@ public class AppointmentController {
     }
 
 
-    /// 7  rescheduleAppointment >> user can reschedule their appointment to pick up their claimed items
+    /// 12 rescheduleAppointment >> user can reschedule their appointment to pick up their claimed items
     @PutMapping("reschedule/{id}")
     public ResponseEntity rescheduleAppointment(@Valid @RequestBody Appointment appointment, Errors e, @PathVariable Integer id) {
 

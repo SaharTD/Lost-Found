@@ -75,22 +75,12 @@ private final AdminService adminService;
 
 
 
-    /// 3
-    ///  checkUnclaimedItem > this method will allow admin to check the items that been found but not claimed
-    @GetMapping("get-unclaimed/{adminId}")
-    public ResponseEntity checkUnclaimedItem (@PathVariable Integer adminId){
-        if(itemService.checkUnclaimedItem(adminId).isEmpty()){
-            return ResponseEntity.status(400).body(new ApiResponse("there are no item that hasn't been claimed"));
-        }
-        return ResponseEntity.status(200).body(new ApiResponse("The item that are not claimed yet"+itemService.checkUnclaimedItem(adminId)));
-
-    }
 
 
 
-    /// 9
 
 
+//13
     @PutMapping("claim-approval/{adminId}/{requestId}")
     public ResponseEntity claimApproval(@PathVariable Integer adminId, @PathVariable Integer requestId){
 
@@ -131,50 +121,20 @@ String result = adminService.claimApproval(adminId,requestId);
 
 
 
-    /// 10
-
-
-    @PutMapping("donation-approval/{adminId}/{requestId}")
-    public ResponseEntity donationApproval(@PathVariable Integer adminId, @PathVariable Integer requestId){
-
-        String result = adminService.donationApproval(adminId,requestId);
-
-
-        if (result.equalsIgnoreCase("adminNF")) {
-            return ResponseEntity.status(400).body(new ApiResponse("The admin is not found"));
-
-        } else if (result.equalsIgnoreCase("requestNF")) {
-
-            return ResponseEntity.status(400).body(new ApiResponse("The request is not found"));
-
-        }else if (result.equalsIgnoreCase("userNF")) {
-
-            return ResponseEntity.status(400).body(new ApiResponse("The user is not found"));
-
-        } else if (result.equalsIgnoreCase("Not eligible")) {
-
-            return ResponseEntity.status(400).body(new ApiResponse("The user is not eligible fot donation "));
-
-        } else if (result.equalsIgnoreCase("wrong type")) {
-
-            return ResponseEntity.status(400).body(new ApiResponse("you are requesting the wrong type"));
-
-
-        } else return ResponseEntity.status(200).body(new ApiResponse("The request is approved successfully !. you can book an appointment now "));
-
-
-    }
 
 
 
-    /// 12
+
+
+
+/// 14
     @GetMapping("find-black-listed")
     public ResponseEntity getAllBlackListed() {
         return ResponseEntity.status(200).body(adminService.findUserByIsBlacklisted());
     }
 
 
-    /// 13
+/// 15
     @GetMapping("find-by-location/{location}")
     public ResponseEntity getLostItemByAddress(@PathVariable String location) {
         return ResponseEntity.status(200).body(adminService.findLostItemBasedOnTheLocation(location));
@@ -182,6 +142,11 @@ String result = adminService.claimApproval(adminId,requestId);
 
 
 
+/// 16
+    @GetMapping("find-by-status/{status}")
+    public ResponseEntity getLostItemsByStatus(@PathVariable String status) {
+        return ResponseEntity.status(200).body(adminService.findItemsByStatus(status));
+    }
 
 
 
